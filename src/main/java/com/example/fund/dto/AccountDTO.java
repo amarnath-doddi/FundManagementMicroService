@@ -1,0 +1,69 @@
+package com.example.fund.dto;
+
+import java.util.Objects;
+
+import com.example.fund.entity.Account;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+public class AccountDTO {
+	private Long id;
+	private Long accountNumber;
+	private Double balance;
+	
+	public AccountDTO() {
+	}
+	
+	public AccountDTO(Long id, Long accountNumber, Double balance) {
+		super();
+		this.id = id;
+		this.accountNumber = accountNumber;
+		this.balance = balance;
+	}
+
+	public AccountDTO(Account account) {
+		this.id = account.getId();
+		this.accountNumber = account.getAccountNumber();
+		this.balance = account.getBalance();
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getAccountNumber() {
+		return accountNumber;
+	}
+	public void setAccountNumber(Long accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+	public Double getBalance() {
+		return balance;
+	}
+	public void setBalance(Double balance) {
+		this.balance = balance;
+	}
+	
+	@JsonIgnore
+	public AccountDTO getAccountDTO(Account account) {
+		this.id = account.getId();
+		this.accountNumber = account.getAccountNumber();
+		this.balance = account.getBalance();
+		return this;
+	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccountDTO account = (AccountDTO) o;
+        return id == account.id  && accountNumber == account.accountNumber
+        		&& balance == account.balance;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, accountNumber, balance);
+    }
+}
