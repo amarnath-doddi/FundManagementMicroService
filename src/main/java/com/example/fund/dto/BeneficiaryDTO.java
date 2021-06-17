@@ -1,10 +1,6 @@
 package com.example.fund.dto;
 
 import java.util.Objects;
-import java.util.Optional;
-
-import com.example.fund.entity.Beneficiary;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class BeneficiaryDTO {
 	private Long id;
@@ -13,17 +9,12 @@ public class BeneficiaryDTO {
 	private AccountDTO account;
 	public BeneficiaryDTO() {
 	}
-	public BeneficiaryDTO(Optional<Beneficiary> beneficiaryOptional) {
-		if(beneficiaryOptional.isPresent()) {
-			account = new AccountDTO();
-			Beneficiary beneficiary = beneficiaryOptional.get();
-			this.id = beneficiary.getId();
-			this.account.setId(beneficiary.getAccountId());
-			this.account.setAccountNumber(beneficiary.getAccountNumber());
-			this.account.setBalance(beneficiary.getBalance());
-			this.ifscCode = beneficiary.getIfscCode();
-			this.name = beneficiary.getName();
-		}
+	public BeneficiaryDTO(Long id, String name, String ifscCode, AccountDTO account) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.ifscCode = ifscCode;
+		this.account = account;
 	}
 	public Long getId() {
 		return id;
@@ -48,28 +39,6 @@ public class BeneficiaryDTO {
 	}
 	public AccountDTO getAccount() {
 		return account;
-	}
-	public BeneficiaryDTO getBeneficiaryDTO(Beneficiary beneficiary) {
-		account = new AccountDTO();
-		this.id = beneficiary.getId();
-		this.account.setId( beneficiary.getAccountId());
-		this.account.setAccountNumber(beneficiary.getAccountNumber());
-		this.account.setBalance(beneficiary.getBalance());
-		this.ifscCode = beneficiary.getIfscCode();
-		this.name = beneficiary.getName();
-		return this;
-	}
-	
-	@JsonIgnore
-	public Beneficiary getBeneficiary() {
-		Beneficiary beneficiary = new Beneficiary();
-		beneficiary.setId(id);
-		beneficiary.setAccountId(account.getId());
-		beneficiary.setAccountNumber(account.getAccountNumber());
-		beneficiary.setBalance(account.getBalance());
-		beneficiary.setIfscCode(ifscCode);
-		beneficiary.setName(name);
-		return beneficiary;
 	}
 	@Override
 	public boolean equals(Object obj) {

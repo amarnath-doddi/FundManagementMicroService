@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 
 import com.example.fund.dto.AccountDTO;
 import com.example.fund.dto.BeneficiaryDTO;
@@ -75,6 +76,15 @@ class BeneficiaryControllerTest {
 		assertNotNull(persistedBeneficiarys);
 		assertEquals(beneficiarys, persistedBeneficiarys);
 	}
+	@Test
+	@DisplayName("Get no Beneficiaries test")
+	void testGetNoBeneficiaries() {
+		when(beneficiaryServiceImpl.getBeneficiries()).thenAnswer(i -> {
+			return null;
+		});
+		
+		assertEquals(HttpStatus.NO_CONTENT,beneficiaryController.getBeneficiaries().getStatusCode());
+	}
 	
 	@Test
 	@DisplayName("Get Beneficiary by id test")
@@ -91,6 +101,14 @@ class BeneficiaryControllerTest {
 		
 		assertEquals(beneficiary, persistedBeneficiary);
 	}
+	@Test
+	@DisplayName("Get No Beneficiary by id test")
+	void testGetNoBeneficiaryById() {
+		when(beneficiaryServiceImpl.getBeneficiary(any(Long.class))).thenAnswer(i -> {
+			return null;
+		});
+		assertThrows(BeneficiaryNotfoundException.class, ()->beneficiaryController.getBeneficiary(3001L));
+	}
 	
 	@Test
 	@DisplayName("Get User by id: Negative Scenario")
@@ -104,8 +122,8 @@ class BeneficiaryControllerTest {
 	}
 	
 	@Test
-	@DisplayName("Update user test")
-	void testUpdateUser() {
+	@DisplayName("Update Beneficiary test")
+	void testUpdateBeneficiary() {
 		when(beneficiaryServiceImpl.updateBeneficiary(any(BeneficiaryDTO.class))).thenAnswer(i -> {
 			BeneficiaryDTO beneficiary = i.getArgument(0);
 			beneficiary.setId(3001L);
@@ -117,20 +135,37 @@ class BeneficiaryControllerTest {
 		
 		assertEquals("Test", persistedBeneficiary.getName());
 	}
+	@Test
+	@DisplayName("Update No Beneficiary test")
+	void testNoUpdateBeneficiary() {
+		when(beneficiaryServiceImpl.updateBeneficiary(any(BeneficiaryDTO.class))).thenAnswer(i -> {
+			return null;
+		});
+		assertEquals(HttpStatus.NO_CONTENT,beneficiaryController.updateBeneficiary(beneficiary).getStatusCode());
+	}
 	
 	
 	@Test
 	@DisplayName("Save Beneficiary test")
-	void testSaveUser() {
+	void testSaveBeneficiary() {
 		when(beneficiaryServiceImpl.createBeneficiary(any(BeneficiaryDTO.class))).thenAnswer(i -> {
 			BeneficiaryDTO beneficiary = i.getArgument(0);
 			beneficiary.setId(30011L);
 			return beneficiary;
 		});
 		
-		BeneficiaryDTO persistedBeneficiary = beneficiaryServiceImpl.createBeneficiary(beneficiary);
+		BeneficiaryDTO persistedBeneficiary = beneficiaryController.createBeneficiary(beneficiary).getBody();
 		
 		assertEquals(beneficiary, persistedBeneficiary);
+	}
+	@Test
+	@DisplayName("Save No Beneficiary test")
+	void testBeneficiaryNotSaved() {
+		when(beneficiaryServiceImpl.createBeneficiary(any(BeneficiaryDTO.class))).thenAnswer(i -> {
+			return null;
+		});
+		
+		assertEquals(HttpStatus.NO_CONTENT,beneficiaryController.createBeneficiary(beneficiary).getStatusCode());
 	}
 	@Test
 	@DisplayName("delete Beneficiary by id test")
@@ -156,5 +191,14 @@ class BeneficiaryControllerTest {
 		//verify(beneficiaryServiceImpl).getBeneficiary(3001L);
 		
 		assertEquals(beneficiaries, persistedBeneficiary);
+	}
+	@Test
+	@DisplayName("Get No Beneficiary by account id test")
+	void testGetNoBeneficiariesByAccountId() {
+		List<BeneficiaryDTO> beneficiaries = new ArrayList<>();
+		when(beneficiaryServiceImpl.getByAccountId(any(Long.class))).thenAnswer(i -> {
+			return null;
+		});
+		assertThrows(BeneficiaryNotfoundException.class, ()->beneficiaryController.getBeneficiariesByAccountId(2001L));
 	}
 }

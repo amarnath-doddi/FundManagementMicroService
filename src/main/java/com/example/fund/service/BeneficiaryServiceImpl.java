@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fund.dto.AccountDTO;
 import com.example.fund.dto.BeneficiaryDTO;
+import com.example.fund.entity.Beneficiary;
 import com.example.fund.repository.BeneficiaryRepository;
 
 @Service
@@ -16,19 +18,15 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 	private BeneficiaryRepository beneficiaryRepository;
 	@Override
 	public BeneficiaryDTO updateBeneficiary(BeneficiaryDTO beneficiary) {
-		return new BeneficiaryDTO(Optional.ofNullable(beneficiaryRepository.saveAndFlush(beneficiary.getBeneficiary())));
-	}
-	@Override
-	public BeneficiaryDTO getById(Long id) {
-		return new BeneficiaryDTO(beneficiaryRepository.findById(id));
+		return getBeneficiaryDTO(beneficiaryRepository.saveAndFlush(getBeneficiary(beneficiary)));
 	}
 	@Override
 	public List<BeneficiaryDTO> getBeneficiries() {
-		return beneficiaryRepository.findAll().stream().map(bf -> new BeneficiaryDTO(Optional.ofNullable(bf))).collect(Collectors.toList());
+		return beneficiaryRepository.findAll().stream().map(bf -> getBeneficiaryDTO(bf)).collect(Collectors.toList());
 	}
 	@Override
 	public BeneficiaryDTO createBeneficiary(BeneficiaryDTO beneficiary) {
-		return new BeneficiaryDTO(Optional.ofNullable(beneficiaryRepository.save(beneficiary.getBeneficiary())));
+		return getBeneficiaryDTO(beneficiaryRepository.save(getBeneficiary(beneficiary)));
 	}
 	@Override
 	public Boolean deleteBeneficiary(Long id) {
@@ -37,15 +35,31 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 	}
 	@Override
 	public BeneficiaryDTO getBeneficiary(Long id) {
-		return new BeneficiaryDTO(Optional.ofNullable(beneficiaryRepository.findById(id).get()));
+		return getBeneficiaryDTO(beneficiaryRepository.findById(id).orElse(new Beneficiary()));
 	}
 	@Override
 	public BeneficiaryDTO getByBeneficiaryAccountNumber(Long beneficiaryAccountNumber) {
-		return new BeneficiaryDTO(Optional.ofNullable(beneficiaryRepository.findByAccountNumber(beneficiaryAccountNumber)));
+		return getBeneficiaryDTO(beneficiaryRepository.findByAccountNumber(beneficiaryAccountNumber));
 	}
 	@Override
 	public List<BeneficiaryDTO> getByAccountId(Long accountId) {
-		return beneficiaryRepository.findByAccountId(accountId).stream().map(bf -> new BeneficiaryDTO(Optional.ofNullable(bf))).collect(Collectors.toList());
+		return beneficiaryRepository.findByAccountId(accountId).stream().map(bf -> getBeneficiaryDTO(bf)).collect(Collectors.toList());
 	}
+	private BeneficiaryDTO getBeneficiaryDTO(Beneficiary beneficiary) {
+		beneficiary = Optional.ofNullable(beneficiary).orElse(new Beneficiary());
+		return new BeneficiaryDTO(beneficiary.getId(), beneficiary.getName(), beneficiary.getIfscCode(), new AccountDTO(beneficiary.getAccountId(), beneficiary.getAccountNumber(),beneficiary.getBalance()));
+	}
+	
+	public Beneficiary getBeneficiary(BeneficiaryDTO beneficiaryDto) {
+		Beneficiary beneficiary = new Beneficiary();
+		beneficiary.setId(beneficiaryDto.getId());
+		beneficiary.setName(beneficiaryDto.getName());
+		beneficiary.setIfscCode(beneficiaryDto.getIfscCode());
+		beneficiary.setAccountId(beneficiaryDto.getAccount().getId());
+		beneficiary.setAccountNumber(beneficiaryDto.getAccount().getAccountNumber());
+		beneficiary.setBalance(beneficiaryDto.getAccount().getBalance());
+		return beneficiary;
+	}
+
 
 }

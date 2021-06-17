@@ -52,7 +52,7 @@ class BeneficiaryServiceImplTest {
 	@DisplayName("Test Create Beneficiary")
 	void testCreateBeneficiary() {
 		when(beneficiaryRepository.save(any(Beneficiary.class))).thenAnswer(i -> {
-			Beneficiary beneficiary = i.getArgument(0);
+			BeneficiaryDTO beneficiary = i.getArgument(0);
 			beneficiary.setId(3011L);
 			return beneficiary;
 		});
@@ -66,9 +66,9 @@ class BeneficiaryServiceImplTest {
 	@DisplayName("Update Beneficiary Test")
 	void testUpdateBeneficiary() {
 		when(beneficiaryRepository.saveAndFlush(any(Beneficiary.class))).thenAnswer(i -> {
-			Beneficiary beneficiary = i.getArgument(0);
+			BeneficiaryDTO beneficiary = i.getArgument(0);
 			beneficiary.setId(3001L);
-			beneficiary.setBalance(100.00);
+			beneficiary.getAccount().setBalance(100.00);
 			return beneficiary;
 		});
 		BeneficiaryDTO updatedBeneficiary = beneficiaryServiceImpl.updateBeneficiary(beneficiary);
@@ -90,12 +90,6 @@ class BeneficiaryServiceImplTest {
 		assertNotNull(beneficiearyDTO);
 	}
 	@Test
-	@DisplayName("Test getById")
-	void testgetById() {
-		BeneficiaryDTO beneficiearyDTO =  beneficiaryServiceImpl.getById(3001L);
-		assertNotNull(beneficiearyDTO);
-	}
-	@Test
 	@DisplayName("Test getBeneficiary")
 	void testgetBeneficiary() {
 		BeneficiaryDTO beneficiearyDTO =  beneficiaryServiceImpl.getBeneficiary(3001L);
@@ -112,5 +106,10 @@ class BeneficiaryServiceImplTest {
 	void testGetByAccountId() {
 		List<BeneficiaryDTO> beneficiearyDTO =  beneficiaryServiceImpl.getByAccountId(2001L);
 		assertNotNull(beneficiearyDTO);
+	}
+	@Test
+	@DisplayName("Test getBeneficiary")
+	void testGetBeneficiary() {
+		assertNotNull(beneficiaryServiceImpl.getBeneficiary(beneficiary));
 	}
 }

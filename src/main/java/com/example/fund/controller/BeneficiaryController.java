@@ -22,7 +22,7 @@ import com.example.fund.exception.DuplicateEntryException;
 import com.example.fund.service.BeneficiaryService;
 
 @RestController
-//@RequestMapping("/api/beneficiary")
+@RequestMapping("/beneficiary")
 public class BeneficiaryController {
 	Logger logger = LoggerFactory.getLogger(BeneficiaryController.class);
 	@Autowired
@@ -56,7 +56,7 @@ public class BeneficiaryController {
 			throw new DuplicateEntryException("Beneficiary already exist!");
 		}
 		BeneficiaryDTO createdBeneficiary = beneficiaryService.createBeneficiary(beneficiary);
-		if(createdBeneficiary!=null) {
+		if(createdBeneficiary==null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<>(createdBeneficiary,HttpStatus.OK);
@@ -79,7 +79,7 @@ public class BeneficiaryController {
 	}
 	
 	@GetMapping("/account/{id}")
-	public ResponseEntity<List<BeneficiaryDTO>> getBeneficiariesByAccountId(@PathVariable Long id) throws BeneficiaryNotfoundException{
+	public ResponseEntity<List<BeneficiaryDTO>> getBeneficiariesByAccountId(@PathVariable Long id){
 		List<BeneficiaryDTO> beneficiaries = beneficiaryService.getByAccountId(id);
 		if(beneficiaries==null) {
 			String message = String.format("Beneficiary doesn't exist for account id :%s",id);

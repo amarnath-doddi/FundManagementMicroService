@@ -5,18 +5,17 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<!-- <version>2.5.0</version> -->
 		<version>2.3.9.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>fund-management</artifactId>
+	<artifactId>FundManagementMicroService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>FundManagement</name>
+	<name>FundManagementMicroService</name>
 	<description>Fund Transfer Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
-		<sonar.exclusions>**/dto/**/*, **/entity/**/*</sonar.exclusions>
+		<sonar.exclusions>**/dto/**/*, **/entity/**/*, **/exception/**/*</sonar.exclusions>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -32,12 +31,6 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<!-- <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency> -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -79,7 +72,8 @@
 		    <groupId>asm</groupId>
 		    <artifactId>asm</artifactId>
 		    <version>3.3.1</version>
-		</dependency> <dependency>
+		</dependency>
+		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		    <version>2.2.8.RELEASE</version>

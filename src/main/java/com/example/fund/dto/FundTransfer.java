@@ -1,6 +1,7 @@
 package com.example.fund.dto;
 
 public class FundTransfer {
+	private long userId;
 	private long beneficaryId;
 	private double amount;
 	public long getBeneficaryId() {
@@ -14,6 +15,12 @@ public class FundTransfer {
 	}
 	public void setAmount(double amount) {
 		this.amount = amount;
+	}
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+	public long getUserId() {
+		return userId;
 	}
 	
 }

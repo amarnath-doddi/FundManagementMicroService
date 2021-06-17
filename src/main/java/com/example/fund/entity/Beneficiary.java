@@ -27,6 +27,8 @@ public class Beneficiary {
 	//@ManyToOne(targetEntity = Account.class,fetch =FetchType.LAZY)
 	@Column(name = "account_id", nullable = false)
 	private Long accountId;
+	public Beneficiary() {
+	}
 	public Long getId() {
 		return id;
 	}

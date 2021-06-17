@@ -26,7 +26,7 @@ import com.example.fund.repository.AccountRepository;
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(OrderAnnotation.class)
-public class FundTransferServiceImplTest {
+class FundTransferServiceImplTest {
 	@Mock
 	private AccountRepository accountRepository;
 	
@@ -50,7 +50,7 @@ public class FundTransferServiceImplTest {
 	@DisplayName("Test Fund Transfer")
 	@Order(1)
 	void testGetUserById() {
-		when(accountRepository.findByUserId(any(Long.class))).thenReturn(account.getUserAccount());
+		when(accountRepository.findByUserId(any(Long.class))).thenReturn(fundTransferServiceImpl.getAccount(account));
 		
 		UserAccountDTO persistedAccount = fundTransferServiceImpl.getByUserId(1000L);
 		

@@ -3,32 +3,27 @@ package com.example.fund.dto;
 import java.util.List;
 import java.util.Objects;
 
-import com.example.fund.entity.Account;
-import com.example.fund.entity.Beneficiary;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class UserAccountDTO {
 	private Long userId;
-	private List<Beneficiary> beneficiaries;
+	private List<BeneficiaryDTO> beneficiaries;
 	private AccountDTO account;
 	public UserAccountDTO() {
 	}
-	public UserAccountDTO(Account account) {
-		this.account = new AccountDTO();
-		this.userId = account.getUserId();
-		this.beneficiaries = account.getBeneficiaries();
-		this.account.setAccountNumber(account.getAccountNumber());
-		this.account.setBalance(account.getBalance());
-		this.account.setId(account.getId());
-		
+	
+	public UserAccountDTO(Long userId, List<BeneficiaryDTO> beneficiaries, AccountDTO account) {
+		super();
+		this.userId = userId;
+		this.beneficiaries = beneficiaries;
+		this.account = account;
 	}
-	public void setBeneficiaries(List<Beneficiary> beneficiaries) {
+
+	public void setBeneficiaries(List<BeneficiaryDTO> beneficiaries) {
 		this.beneficiaries = beneficiaries;
 	}
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-	public List<Beneficiary> getBeneficiaries() {
+	public List<BeneficiaryDTO> getBeneficiaries() {
 		return beneficiaries;
 	}
 	public Long getUserId() {
@@ -40,11 +35,6 @@ public class UserAccountDTO {
 	public AccountDTO getAccountDTO() {
 		return account;
 	}
-	@JsonIgnore
-	public Account getUserAccount() {
-		return new Account(this.account.getId(),this.userId, this.account.getAccountNumber(), this.account.getBalance(),this.beneficiaries);
-	}
-	
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;

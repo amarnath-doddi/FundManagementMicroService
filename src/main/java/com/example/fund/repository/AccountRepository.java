@@ -7,4 +7,5 @@ import com.example.fund.entity.Account;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long>{
 	public Account findByUserId(Long userId);
+	public Account findByAccountNumber(Long accountNumber);
 }
